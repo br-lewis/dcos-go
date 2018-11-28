@@ -60,7 +60,7 @@ function _unittest_with_coverage {
     go get -u github.com/jstemmer/go-junit-report
     go get -u github.com/smartystreets/goconvey
     go get -u golang.org/x/tools/cmd/cover
-    go get -u github.com/axw/gocov/...
+    go get -u github.com/axw/gocov/gocov
     go get -u github.com/AlekSi/gocov-xml
 
     # We can't' use the test profile flag with multiple packages. Therefore,
