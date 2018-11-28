@@ -14,6 +14,7 @@
 set -e
 set -o pipefail
 export PATH="${GOPATH}/bin:${PATH}"
+export GO111MODULE=on
 
 PACKAGES="$(go list ./... | grep -v /vendor/)"
 SUBDIRS=$(go list -f {{.Dir}} ./... | grep -v /vendor/)
@@ -49,7 +50,7 @@ function _golint {
 
 function _govet {
     logmsg "Running 'go vet' ..."
-    go vet ${PACKAGES}
+    go vet -mod=vendor ${PACKAGES}
 }
 
 
@@ -72,7 +73,7 @@ function _unittest_with_coverage {
     for import_path in ${PACKAGES}; do
         package=$(basename ${import_path})
 
-        go test -v -race -covermode=$covermode                                   \
+        go test -mod=vendor -v -race -covermode=$covermode                                   \
             -coverprofile="${BUILD_DIR}/coverage-reports/profile_${package}.cov" \
             $import_path | tee /dev/stderr                                       \
             | go-junit-report > "${BUILD_DIR}/test-reports/${package}-report.xml"
